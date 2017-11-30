@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: hashicorp/packer:light
     steps:
-	  - run:
+      - run:
         name: Install Docker client
         command: |
           set -x
