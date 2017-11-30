@@ -5,6 +5,7 @@ jobs:
       - image: hashicorp/packer:light
     steps:
       - setup_remote_docker
+      - checkout
       - run:
           name: "packer build"
           command: "packer build docker.json"
