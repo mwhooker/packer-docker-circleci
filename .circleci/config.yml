@@ -6,7 +6,7 @@ jobs:
     steps:
       - run:
           name: "update base"
-          command: "sudo apt-get update && sudo update-ca-certificates"
+          command: "apt-get update && update-ca-certificates"
       - checkout
       - restore_cache:
           key: "packer-1.1.2"
