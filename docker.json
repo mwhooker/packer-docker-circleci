@@ -1,0 +1,31 @@
+{
+    "builders": [
+        {
+            "commit": true,
+            "image": "node:alpine",
+            "run_command": [
+                "-d",
+                "-i",
+                "-t",
+                "{{.Image}}",
+                "/bin/sh"
+            ],
+            "changes": [
+                "CMD [\"node\", \"app.js\"]",
+                "WORKDIR \"/usr/src/app\""
+            ],
+            "type": "docker"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": ["mkdir -p /usr/src/app"]
+        },
+        {
+            "type": "file",
+            "source": "app.js",
+            "destination": "/usr/src/app/"
+        }
+    ]
+}
