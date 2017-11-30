@@ -1,6 +1,14 @@
 {
+    "variables": {
+        "login_username": "{{env `dockerhub_user`}}",
+        "login_password": "{{env `dockerhub_password`}}"
+    },
     "builders": [
         {
+            "changes": [
+                "CMD [\"node\", \"app.js\"]",
+                "WORKDIR \"/usr/src/app\""
+            ],
             "commit": true,
             "image": "node:alpine",
             "run_command": [
@@ -10,22 +18,31 @@
                 "{{.Image}}",
                 "/bin/sh"
             ],
-            "changes": [
-                "CMD [\"node\", \"app.js\"]",
-                "WORKDIR \"/usr/src/app\""
-            ],
             "type": "docker"
         }
     ],
     "provisioners": [
         {
-            "type": "shell",
-            "inline": ["mkdir -p /usr/src/app"]
+            "inline": [
+                "mkdir -p /usr/src/app"
+            ],
+            "type": "shell"
         },
         {
-            "type": "file",
+            "destination": "/usr/src/app/",
             "source": "app.js",
-            "destination": "/usr/src/app/"
+            "type": "file"
         }
-    ]
+    ],
+    "post-processors": [[
+        {
+            "repository": "mwhooker/packer-circleci-example",
+            "type": "docker-tag"
+        },
+        {
+            "login_password": "{{user `login_password`}}",
+            "login_username": "{{user `login_username`}}",
+            "type": "docker-push"
+        }
+    ]]
 }
