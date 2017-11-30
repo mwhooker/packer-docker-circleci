@@ -15,5 +15,5 @@ jobs:
       - setup_remote_docker
       - checkout
       - run:
-        name: "packer build"
-        command: "packer build docker.json"
+          name: "packer build"
+          command: "packer build docker.json"
