@@ -2,21 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      - image: hashicorp/packer:light
     steps:
-      - run:
-          name: "update base"
-          command: "apt-get update"
-      - checkout
-      - restore_cache:
-          key: "packer-1.1.2"
-      - run:
-          name: "install packer"
-          command: ./install_packer.sh
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - "~/bin"
       - setup_remote_docker
       - run:
           name: "packer build"
