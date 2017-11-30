@@ -5,9 +5,16 @@ jobs:
       - image: debian:stretch
     steps:
       - checkout
+      - restore_cache:
+          key: "packer-1.1.2"
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: "install packer"
+          command: ./install_packer.sh
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - "~/bin"
+      - setup_remote_docker
       - run:
-          name: Print the Current Time
-          command: date
+          name: "packer build"
+          command: "packer build docker.json"
